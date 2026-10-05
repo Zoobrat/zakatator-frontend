@@ -1,3 +1,5 @@
+const API_BASE = 'https://zakatator-backend.onrender.com';
+
 const clippyTexts = {
     default: "Привет! Я Срепыч! Выбери иконку чтобы начать! 🎁",
     spin: "О, выбрать подарок? Классика! Укажи бюджет — я подберу что-то годное! 🎲",
@@ -279,7 +281,7 @@ window.loadGoals = async function() {
     updateClippy("Загружаем великие цели... 🧩");
     
     try {
-        const response = await fetch(`/api/goals`);
+        const response = await fetch(`${API_BASE}/api/goals`);
         
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
@@ -382,7 +384,7 @@ function showContributionForm(goalId, goalTitle, maxAmount) {
         }
         
         try {
-            const response = await fetch(`/api/contribute?goal_id=${goalId}&amount_rub=${amountRub}&contributor_name=${encodeURIComponent(contributorName)}`, {
+            const response = await fetch(`${API_BASE}/api/contribute?goal_id=${goalId}&amount_rub=${amountRub}&contributor_name=${encodeURIComponent(contributorName)}`, {
                 method: 'POST'
             });
             
@@ -461,7 +463,7 @@ window.spinGift = async function() {
         const excludeIds = [...lockedIds, ...Array.from(window.shownGiftIds)];
         const previousIds = excludeIds.length > 0 ? excludeIds.join(',') : null;
         
-        const url = `/api/spin?budget=${budget}&category=${category}&limit=5${previousIds ? `&previous_ids=${previousIds}` : ''}`;
+        const url = `${API_BASE}/api/spin?budget=${budget}&category=${category}&limit=5${previousIds ? `&previous_ids=${previousIds}` : ''}`;
         
         const response = await fetch(url, { method: 'POST' });
         
@@ -552,7 +554,7 @@ window.showAllGifts = async function() {
     }
     
     try {
-        const response = await fetch(`/api/wishlist`);
+        const response = await fetch(`${API_BASE}/api/wishlist`);
         
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
@@ -666,7 +668,7 @@ window.approveGifts = async function() {
         const itemIds = gifts.map(g => g.id).join(',');
         const totalRub = gifts.reduce((sum, g) => sum + (parseInt(g.price_rub) || 0), 0);
         
-        const response = await fetch('/api/reserve', {
+        const response = await fetch(`${API_BASE}/api/reserve`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
