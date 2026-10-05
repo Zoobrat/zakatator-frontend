@@ -784,6 +784,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-    
-    document.getElementById('modal-close').onclick = closeModal;
 });
